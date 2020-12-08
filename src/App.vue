@@ -1,27 +1,23 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png" />
-  <HelloWorld msg="Welcome to Your Vue.js + TypeScript App" />
+  <h1>todoList</h1>
+  <div id="app">
+    <date-bar></date-bar>
+    <todo-list></todo-list>
+  </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import HelloWorld from "./components/HelloWorld.vue";
+import 'bootstrap/dist/css/bootstrap.min.css'
+import 'bootstrap'
+import dateBar from "./components/dateBar.vue";
+import todoList from './components/todoList.vue'
 
 export default defineComponent({
   name: "App",
   components: {
-    HelloWorld
-  }
+    dateBar,
+    todoList
+  },
 });
 </script>
-
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>
