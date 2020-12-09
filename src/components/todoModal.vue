@@ -2,10 +2,11 @@
   <!-- Button trigger modal -->
   <div style="float: right; padding: 0.4em 1rem 0 0">
     <img
-      class="modal-btn"
+      class="lit-transition-scale"
       src="../assets/Add.svg"
       data-toggle="modal"
       data-target="#staticBackdrop"
+      style="width: 1.5em;border-radius: 50%"
     />
   </div>
 
@@ -44,11 +45,7 @@
             >
               添加任务
             </button>
-            <button
-              type="button"
-              class="btn btn-modal"
-              data-dismiss="modal"
-            >
+            <button type="button" class="btn btn-modal" data-dismiss="modal">
               取消
             </button>
           </div>
@@ -60,37 +57,29 @@
 
 <script lang="ts">
 import { defineComponent, ref } from "vue";
-import { emitter } from './todoList.vue'
+import { emitter } from "./todoList.vue";
+import "../css/lit-animation.css";
 
 export default defineComponent({
   name: "todoModal",
   props: {
-    inputVal: String,
+    inputVal: String
   },
-  setup(props, context) {
+  setup() {
     const inputRef = ref("");
     const newTask = () => {
-      emitter.emit('list-created', inputRef)
+      emitter.emit("list-created", inputRef.value);
       inputRef.value = "";
     };
     return {
       inputRef,
-      newTask,
+      newTask
     };
-  },
+  }
 });
 </script>
 
 <style>
-.modal-btn {
-  width: 1.5em;
-  border-radius: 50%;
-  transition: all 0.5s ease 0s;
-}
-.modal-btn:hover {
-  transition: all 0.5s ease 0s;
-  transform: scale(1.2);
-}
 .btn {
   padding: 0.15em 1em;
   margin: 0em 0.5em;

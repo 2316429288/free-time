@@ -1,0 +1,22 @@
+.lit-transition-scale {
+  transition: all 0.5s ease 0s;
+}
+.lit-transition-scale:hover {
+  transition: all 0.5s ease 0s;
+  transform: scale(1.2);
+}
+.lit-btn-transition-scale:focus {
+  animation: transition-scale 0.5s linear;
+}
+@keyframes transition-scale {
+  0% {
+    transition: all 1s ease 0s;
+  }
+  50% {
+    transition: all 1s ease 0s;
+    transform: scale(1.2);
+  }
+  100%{
+    transition: all 1s ease 0s; 
+  }
+}

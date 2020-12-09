@@ -1,47 +1,60 @@
 <template>
-  <ul class="list-group">
-    <!-- <li class="list-group-item w-75 ml-3" v-for="task in dateArr" :key="task">
-      <img class="list-item-img" src="../assets/Success.svg" />{{ task }}
-    </li> -->
-  </ul>
-  <ul class="list-group">
-    <li class="list-group-item w-75 ml-3">
-      <img class="list-item-img" src="../assets/Success.svg" />{{ todo }}
+  <ul class="list-group" v-if="todoList.length" @click="wellDown">
+    <li
+      class="list-group-item w-75 ml-3"
+      v-for="(item, index) in todoList"
+      :key="index"
+      ref="listRef"
+    >
+      <button
+        type="button"
+        class="list-button lit-btn-transition-scale"
+      ></button>
+      {{ item }}
     </li>
-    <li class="list-group-item w-75 ml-3">
-      <img class="list-item-img" src="../assets/Success.svg" />{{ todo }}
-    </li>
   </ul>
+  <div class="pt-5 mt-5" v-else>
+    <h3 class="text-center" style="color: #db7093">从心力交瘁到掌控一切</h3>
+    <h3 class="text-center" style="color: #db7093">现在开始你的第一条便签</h3>
+  </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, onUnmounted, ref} from "vue";
+import { defineComponent, ref } from "vue";
 import mitt from "mitt";
+import "../css/lit-animation.css";
 
 // 创建mitt实例
 export const emitter = mitt();
-type validateStr = string;
+// 定义数据类型
+type validateItem = string;
+type validateList = validateItem[];
+
 export default defineComponent({
   name: "todoList",
   setup() {
-    const dateArr = ref(['帅气', '就是帅气','无比帅气'])
-    const todo = "今天剪头发";
-    const validateArr = ref([])
-    const callback = () => {
-      // if () {
-      //   console.log(validateArr)
-      // }
+    const listRef = ref(null);
+    const todoList = ref<validateList>([]);
+    const callback = (task?: validateItem) => {
+      if (task) {
+        todoList.value.push(task);
+        console.log(listRef)
+      }
     };
     emitter.on("list-created", callback);
     // onUnmounted(() => {
     //   emitter.off("list-created", callback);
     // });
-    return {
-      todo,
-      validateArr,
-      dateArr
+    const wellDown = (index: number) => {
+      console.log(index);
+      todoList.value.splice(index, 1);
     };
-  },
+    return {
+      todoList,
+      wellDown,
+      listRef
+    };
+  }
 });
 </script>
 <style>
@@ -55,9 +68,28 @@ export default defineComponent({
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
 }
-.list-item-img {
-  width: 1.5em;
-  padding-bottom: 0.175em;
-  margin-right: 0.5em;
+.list-button {
+  background-image: url("~@/assets/Success.svg");
+  background-color: transparent;
+  border: none;
+  border-radius: 50%;
+  background-size: cover;
+  height: 2em;
+  width: 2em;
+  position: relative;
+  top: 0.5em;
+  margin-right: 0.4em;
+}
+.list-button:focus {
+  outline: none;
+}
+.list-button:hover {
+  cursor: auto;
+}
+[type="button"]:not(:disabled),
+[type="reset"]:not(:disabled),
+[type="submit"]:not(:disabled),
+button:not(:disabled) {
+  cursor: auto;
 }
 </style>

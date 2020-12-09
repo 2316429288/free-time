@@ -28,7 +28,7 @@ export default defineComponent({
       "Sept",
       "Oct",
       "Nov",
-      "Dec",
+      "Dec"
     ];
     const week = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
     const dayOfweeks = week[date.getDay()];
