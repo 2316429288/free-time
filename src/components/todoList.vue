@@ -1,16 +1,23 @@
 <template>
-  <ul class="list-group" v-if="todoList.length" @click="wellDown">
+  <ul class="list-group" v-if="todoList.length">
     <li
       class="list-group-item w-75 ml-3"
-      v-for="(item, index) in todoList"
-      :key="index"
-      ref="listRef"
+      v-for="item in todoList"
+      :key="item"
+      @click="wellDown"
     >
       <button
         type="button"
-        class="list-button lit-btn-transition-scale"
+        id="addStrikeBtn"
+        class="lit-btn-transition-scale"
+        :class="downBtn"
       ></button>
-      {{ item }}
+      <span :class="isDown">{{ item }}</span>
+      <button
+        type="button"
+        id="deleteBtn"
+        style="height:2em;width:2em"
+      ></button>
     </li>
   </ul>
   <div class="pt-5 mt-5" v-else>
@@ -33,26 +40,48 @@ type validateList = validateItem[];
 export default defineComponent({
   name: "todoList",
   setup() {
-    const listRef = ref(null);
+    // 控制样式
+    const isDown = {
+      down: false
+    };
+    const downBtn = {
+      hasNike: false,
+      noNike: true
+    };
+    // 生成todoList
     const todoList = ref<validateList>([]);
     const callback = (task?: validateItem) => {
       if (task) {
         todoList.value.push(task);
-        console.log(listRef)
       }
     };
+    // mitt传值
     emitter.on("list-created", callback);
     // onUnmounted(() => {
     //   emitter.off("list-created", callback);
     // });
-    const wellDown = (index: number) => {
-      console.log(index);
-      todoList.value.splice(index, 1);
+    // Li按钮单击事件
+    const wellDown = (e: MouseEvent) => {
+      if (e.target) {
+        const targetEle = e.target as HTMLElement;
+        const liItem = targetEle.parentNode;
+        if (targetEle.id === "deleteBtn") {
+          liItem?.parentNode?.removeChild(liItem);
+        } else if (targetEle.id === "addStrikeBtn") {
+          // 添加下划线(未完成)
+          downBtn.hasNike = !downBtn.hasNike;
+          downBtn.noNike = !downBtn.noNike;
+        } else {
+          return;
+        }
+      }
+      // todoList.value.splice();
     };
     return {
       todoList,
       wellDown,
-      listRef
+      isDown,
+      downBtn
     };
   }
 });
@@ -68,8 +97,14 @@ export default defineComponent({
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
 }
-.list-button {
-  background-image: url("~@/assets/Success.svg");
+.hasNike {
+  background-image: url("~@/assets/Success.png");
+}
+.noNike {
+  background-image: url("~@/assets/Add.svg");
+}
+.noNike,
+.hasNike {
   background-color: transparent;
   border: none;
   border-radius: 50%;
@@ -80,6 +115,18 @@ export default defineComponent({
   top: 0.5em;
   margin-right: 0.4em;
 }
+/* .list-button {
+  background-image: url("~@/assets/Success.svg");
+  background-color: transparent;
+  border: none;
+  border-radius: 50%;
+  background-size: cover;
+  height: 2em;
+  width: 2em;
+  position: relative;
+  top: 0.5em;
+  margin-right: 0.4em;
+} */
 .list-button:focus {
   outline: none;
 }
@@ -91,5 +138,8 @@ export default defineComponent({
 [type="submit"]:not(:disabled),
 button:not(:disabled) {
   cursor: auto;
+}
+.down {
+  text-decoration: line-through;
 }
 </style>
