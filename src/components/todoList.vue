@@ -13,11 +13,7 @@
         :class="downBtn"
       ></button>
       <span :class="isDown">{{ item }}</span>
-      <button
-        type="button"
-        id="deleteBtn"
-        style="height:2em;width:2em"
-      ></button>
+      <button type="button" id="deleteBtn" class="deleteBtn"></button>
     </li>
   </ul>
   <div class="pt-5 mt-5" v-else>
@@ -44,10 +40,10 @@ export default defineComponent({
     const isDown = {
       down: false
     };
-    const downBtn = {
+    const downBtn = ref({
       hasNike: false,
       noNike: true
-    };
+    });
     // 生成todoList
     const todoList = ref<validateList>([]);
     const callback = (task?: validateItem) => {
@@ -69,8 +65,8 @@ export default defineComponent({
           liItem?.parentNode?.removeChild(liItem);
         } else if (targetEle.id === "addStrikeBtn") {
           // 添加下划线(未完成)
-          downBtn.hasNike = !downBtn.hasNike;
-          downBtn.noNike = !downBtn.noNike;
+          downBtn.value.hasNike = !downBtn.value.hasNike;
+          downBtn.value.noNike = !downBtn.value.noNike;
         } else {
           return;
         }
@@ -103,30 +99,29 @@ export default defineComponent({
 .noNike {
   background-image: url("~@/assets/Add.svg");
 }
+.deleteBtn {
+  background-image: url(~@/assets/Delete.svg);
+  height: 1.3em;
+  width: 1.3em;
+  top: 0.5em;
+  float: right;
+}
 .noNike,
 .hasNike {
-  background-color: transparent;
-  border: none;
-  border-radius: 50%;
-  background-size: cover;
-  height: 2em;
-  width: 2em;
-  position: relative;
-  top: 0.5em;
+  height: 1.5em;
+  width: 1.5em;
+  top: 0.3em;
   margin-right: 0.4em;
 }
-/* .list-button {
-  background-image: url("~@/assets/Success.svg");
+.noNike,
+.hasNike,
+.deleteBtn {
   background-color: transparent;
   border: none;
   border-radius: 50%;
   background-size: cover;
-  height: 2em;
-  width: 2em;
   position: relative;
-  top: 0.5em;
-  margin-right: 0.4em;
-} */
+}
 .list-button:focus {
   outline: none;
 }
