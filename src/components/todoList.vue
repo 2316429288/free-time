@@ -39,10 +39,6 @@ export default defineComponent({
     const isDown = {
       down: false
     };
-    // const downBtn = ref({
-    //   hasNike: false,
-    //   noNike: true
-    // });
     // 生成todoList
     const todoList = ref<validateList>([]);
     const callback = (task?: validateItem) => {
@@ -64,12 +60,10 @@ export default defineComponent({
           liItem?.parentNode?.removeChild(liItem);
         } else if (targetEle.id === "addStrikeBtn") {
           // 添加下划线(未完成)
-          // downBtn.value.hasNike = !downBtn.value.hasNike;
-          // downBtn.value.noNike = !downBtn.value.noNike;
-          if(targetEle.className==='lit-btn-transition-scale noNike'){
-            targetEle.setAttribute('class','lit-btn-transition-scale hasNike')
+          if (targetEle.className === "lit-btn-transition-scale noNike") {
+            targetEle.setAttribute("class", "lit-btn-transition-scale hasNike");
           } else {
-            targetEle.setAttribute('class', 'lit-btn-transition-scale noNike')
+            targetEle.setAttribute("class", "lit-btn-transition-scale noNike");
           }
         } else {
           return;
@@ -79,8 +73,7 @@ export default defineComponent({
     return {
       todoList,
       wellDown,
-      isDown,
-      // downBtn
+      isDown
     };
   }
 });
