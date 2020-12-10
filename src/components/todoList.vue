@@ -9,11 +9,10 @@
       <button
         type="button"
         id="addStrikeBtn"
-        class="lit-btn-transition-scale"
-        :class="downBtn"
+        class="lit-btn-transition-scale noNike"
       ></button>
       <span :class="isDown">{{ item }}</span>
-      <button type="button" id="deleteBtn" class="deleteBtn"></button>
+      <button type="button" id="deleteBtn"></button>
     </li>
   </ul>
   <div class="pt-5 mt-5" v-else>
@@ -40,10 +39,10 @@ export default defineComponent({
     const isDown = {
       down: false
     };
-    const downBtn = ref({
-      hasNike: false,
-      noNike: true
-    });
+    // const downBtn = ref({
+    //   hasNike: false,
+    //   noNike: true
+    // });
     // 生成todoList
     const todoList = ref<validateList>([]);
     const callback = (task?: validateItem) => {
@@ -65,19 +64,23 @@ export default defineComponent({
           liItem?.parentNode?.removeChild(liItem);
         } else if (targetEle.id === "addStrikeBtn") {
           // 添加下划线(未完成)
-          downBtn.value.hasNike = !downBtn.value.hasNike;
-          downBtn.value.noNike = !downBtn.value.noNike;
+          // downBtn.value.hasNike = !downBtn.value.hasNike;
+          // downBtn.value.noNike = !downBtn.value.noNike;
+          if(targetEle.className==='lit-btn-transition-scale noNike'){
+            targetEle.setAttribute('class','lit-btn-transition-scale hasNike')
+          } else {
+            targetEle.setAttribute('class', 'lit-btn-transition-scale noNike')
+          }
         } else {
           return;
         }
       }
-      // todoList.value.splice();
     };
     return {
       todoList,
       wellDown,
       isDown,
-      downBtn
+      // downBtn
     };
   }
 });
@@ -94,12 +97,12 @@ export default defineComponent({
   border-bottom-right-radius: 0;
 }
 .hasNike {
-  background-image: url("~@/assets/Success.png");
+  background-image: url("~@/assets/noDown.png");
 }
 .noNike {
-  background-image: url("~@/assets/Add.svg");
+  background-image: url("~@/assets/isDown.png");
 }
-.deleteBtn {
+#deleteBtn {
   background-image: url(~@/assets/Delete.svg);
   height: 1.3em;
   width: 1.3em;
@@ -115,7 +118,7 @@ export default defineComponent({
 }
 .noNike,
 .hasNike,
-.deleteBtn {
+#deleteBtn {
   background-color: transparent;
   border: none;
   border-radius: 50%;
